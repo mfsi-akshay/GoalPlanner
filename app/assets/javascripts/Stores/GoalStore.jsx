@@ -7,7 +7,6 @@ let _goals = [];
 
 class GoalEventEmitter extends EventEmitter{
   getAll(){
-
     return _goals.map(goal => {
       let date = new Date(goal.start_date);
       let formattedDate = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
@@ -34,6 +33,10 @@ AppDispatcher.register(action => {
   switch (action.actionType) {
     case ActionTypes.RECEIVED_GOALS:
       _goals = action.rawGoals;
+      GoalStore.emitChange();
+      break;
+    case ActionTypes.RECEIVED_ONE_GOAL:
+      _goals.unshift(action.rawGoal);
       GoalStore.emitChange();
       break;
     default:
